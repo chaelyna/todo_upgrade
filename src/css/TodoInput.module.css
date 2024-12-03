@@ -1,0 +1,12 @@
+.container {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+.todoInput {
+  height: 40px;
+  border-radius: 4px;
+  padding: 8px 12px;
+  flex: 1;
+  border: 1px solid #ddd;
+}
