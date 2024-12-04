@@ -16,8 +16,10 @@ li input[type="text"] {
   border: 1px dashed #ddd;
   background: #f1f8ff;
 }
-li span {
-  text-align: left;
-  flex: 1;
+li div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1 1 auto;
   padding: 0 12px;
 }
