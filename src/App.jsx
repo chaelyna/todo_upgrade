@@ -6,9 +6,14 @@ import styles from "./css/App.module.css";
 /**
  * useReducer()에서 쓸 함수 정의
  * 파라미터로 상태와 액션을 받아서 '새로운 상태'를 반환하는 함수임
- * @param {*} state 상태
- * @param {*} action 액션(객체)
- * @returns 
+ * @param {*} state 현재의 상태, 리듀서 함수는 상태를 변경하지 않고 새로운 상태를 반환함.
+ * state는 상태의 이전 값을 나타내며, 리듀서 함수는 이 값을 기반으로 새로운 상태를 계산함.
+ * 이 파일에서 state는 배열인 todos임.
+ * @param {*} action 액션(객체), 상태를 변경할 때 필요한 정보를 포함하므로 안에 type과 payload가 들어있음
+ * type: 어떤 종류의 상태 변경이 일어나는지를 나타내는 문자열
+ * payload: 상태 변경에 필요한 추가적인 데이터를 포함함.
+ * 추가할 할 일의 텍스트, 업데이트할 할 일의 ID와 텍스트, 완료 여부를 토글할 할 일의 ID 등이 들어있음
+ * @returns 스위치를 통해 분기된 각 반환값
  */
 const todoReducer = (state, action) => {
   switch (action.type) {
@@ -45,6 +50,8 @@ function App() {
   }, [todos]);
 
   // CRUD함수모음(dispatch로 정의)
+  // useCallback은 리액트 훅 중 하나로, 컴포넌트가 다시 렌더링될 때마다 동일한 함수를 재사용할 수 있도록 합니다.
+  // 이는 성능 최적화에 유리하며, 특히 자식 컴포넌트에 콜백 함수를 전달할 때 유용합니다.
   const addTodo = useCallback((text) => dispatch({ type: 'ADD_TODO', payload: text }), []);
   const updateTodo = useCallback((id, text) => dispatch({ type: 'UPDATE_TODO', payload: { id, text } }), []);
   const toggleComplete = useCallback((id) => dispatch({ type: 'TOGGLE_COMPLETE', payload: id }), []);

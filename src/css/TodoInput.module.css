@@ -5,8 +5,8 @@
 }
 .todoInput {
   height: 40px;
-  border-radius: 4px;
   padding: 8px 12px;
   flex: 1;
-  border: 1px solid #ddd;
+  border: none;
+  border-bottom: 2px solid #ddd;
 }

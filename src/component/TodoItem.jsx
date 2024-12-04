@@ -1,6 +1,7 @@
 // TodoItem.jsx
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import style from "../css/TodoItem.module.css";
 
 const TodoItem = ({ todo, updateTodo, toggleComplete, deleteTodo }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -18,7 +19,7 @@ const TodoItem = ({ todo, updateTodo, toggleComplete, deleteTodo }) => {
   };
 
   return (
-    <li>
+    <li className={style.li}>
       {/* 체크박스 */}
       <input
         type="checkbox"
