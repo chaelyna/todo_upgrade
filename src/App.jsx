@@ -28,8 +28,9 @@ const todoReducer = (state, action) => {
   };
 
   switch (action.type) {
-    // action.type을 감지하여 케이스 분기
-    // 본문내용으로는 action.payload를 뜯어서 넣기
+    // action객체의 type 값을 감지하여 케이스 분기되며, 반환되는 값을 
+    // dispatch에 
+    // 각 todo의 본문내용으로는 action.payload를 뜯어서 넣기
 
     // 최초 등록
     case 'ADD_TODO':
@@ -67,6 +68,8 @@ const todoReducer = (state, action) => {
 
 function App() {
   // useReducer(내가만든reducer함수, 초기 상태 값, 비동기처리)
+  // 내가만든reducer함수가 반환하는 값(위에 선언된 스위치 반환값)이 useReducer의 첫번째 인자가 되는셈
+
   // 상태 변경 로직을 하나의 reducer 함수로 집중화하여 코드의 명확성을 높이는 리팩토링
   const [todos, dispatch] = useReducer(todoReducer, [], () => {
     // dispatch 함수는 reducer 함수로 액션을 전달하여 상태를 업데이트 함
@@ -79,8 +82,8 @@ function App() {
   }, [todos]);
 
   // CRUD함수모음(dispatch로 정의)
-  // useCallback은 리액트 훅 중 하나로, 컴포넌트가 다시 렌더링될 때마다 동일한 함수를 재사용할 수 있도록 합니다.
-  // 이는 성능 최적화에 유리하며, 특히 자식 컴포넌트에 콜백 함수를 전달할 때 유용합니다.
+  // useCallback은 리액트 훅 중 하나로, 컴포넌트가 다시 렌더링될 때마다 동일한 함수를 재사용할 수 있게 함
+  // 이는 성능 최적화에 유리하며, 특히 자식 컴포넌트에 콜백 함수를 전달할 때 유용
   const addTodo = useCallback((text) => dispatch({ type: 'ADD_TODO', payload: text }), []);
   const updateTodo = useCallback((id, text) => dispatch({ type: 'UPDATE_TODO', payload: { id, text } }), []);
   const toggleComplete = useCallback((id) => dispatch({ type: 'TOGGLE_COMPLETE', payload: id }), []);
