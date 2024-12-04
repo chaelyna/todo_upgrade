@@ -16,21 +16,50 @@ import styles from "./css/App.module.css";
  * @returns 스위치를 통해 분기된 각 반환값
  */
 const todoReducer = (state, action) => {
+  // 등록시간 표시 옵션
+  const dayOption = {
+    year: '2-digit',
+    month: 'long',
+    day: 'numeric',
+    weekday: "long",
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  };
+
   switch (action.type) {
     // action.type을 감지하여 케이스 분기
-    case 'ADD_TODO':
-      return [...state, { id: Date.now(), text: action.payload, completed: false }];
     // 본문내용으로는 action.payload를 뜯어서 넣기
+
+    // 최초 등록
+    case 'ADD_TODO':
+      return [...state, {
+        id: Date.now(),
+        time: new Date().toLocaleString('ko-KR', dayOption),
+        text: action.payload,
+        completed: false
+      }];
+
+    // 텍스트 수정
     case 'UPDATE_TODO':
       return state.map(todo =>
-        todo.id === action.payload.id ? { ...todo, text: action.payload.text } : todo
+        todo.id === action.payload.id
+          ? { ...todo, text: action.payload.text, time: new Date().toLocaleString('ko-KR', dayOption) }
+          : todo
       );
+    // 완료여부 수정
     case 'TOGGLE_COMPLETE':
       return state.map(todo =>
-        todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo
+        todo.id === action.payload
+          ? { ...todo, completed: !todo.completed }
+          : todo
       );
+
+    // 삭제
     case 'DELETE_TODO':
       return state.filter(todo => todo.id !== action.payload);
+
+    // 이도저도 아닐때
     default:
       return state;
   }
