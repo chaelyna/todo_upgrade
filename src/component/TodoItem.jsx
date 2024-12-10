@@ -3,6 +3,11 @@
 import { useState } from 'react';
 import style from "../css/TodoItem.module.css";
 
+// 사용자 의사확인
+const confirmAndExecute = (action, message) => {
+  if (confirm(message)) action();
+};
+
 const TodoItem = ({ todo, updateTodo, toggleComplete, deleteTodo }) => {
   const [isEditing, setIsEditing] = useState(false);
   // 수정상태 여부를 초기값으로 상태에 설정
@@ -13,7 +18,11 @@ const TodoItem = ({ todo, updateTodo, toggleComplete, deleteTodo }) => {
   const handleEdit = () => {
     if (isEditing && editText.trim()) {
       // isEditing이 true이고 editText가 존재한다면 App에 선언한 updateTodo(해당todo고유 아이디값, 변경된내용)를 실행해
-      updateTodo(todo.id, editText);
+      // updateTodo(todo.id, editText);
+      confirmAndExecute(() =>
+        updateTodo(todo.id, editText),
+        `'${todo.text}'를 '${editText}'로 수정할까요? 작성 날짜도 변경됩니다!`
+      );
     }
     setIsEditing(!isEditing);
     // 수정상태를 반대로 돌려
@@ -61,7 +70,8 @@ const TodoItem = ({ todo, updateTodo, toggleComplete, deleteTodo }) => {
       </button>
 
       {/* 삭제버튼 */}
-      <button onClick={() => deleteTodo(todo.id)}>
+      <button onClick={() =>
+        confirmAndExecute(() => deleteTodo(todo.id), `'${todo.text}'를 삭제할까요?`)}>
         삭제
       </button>
     </li>
