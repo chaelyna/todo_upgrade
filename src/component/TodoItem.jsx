@@ -116,7 +116,7 @@ const TodoItem = ({ todo, updateTodo, toggleComplete, deleteTodo }) => {
         >
           {mode === 'delete'
             ? (`'${todo.text}'를 삭제할까요?`)
-            : (`'${todo.text}'를 '${editText}'로 수정할까요? 작성 날짜도 변경됩니다!`)
+            : (`'${todo.text}'를 '${editText}'(으)로 수정할까요? 작성 날짜도 변경됩니다!`)
           }
         </Modal>
 
