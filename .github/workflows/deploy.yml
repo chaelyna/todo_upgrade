@@ -1,38 +1,61 @@
 name: Deploy to GitHub Pages
 
-on:
+on:  
   push:
-    branches:
-      - main # main 브랜치에 push될 때 실행
-
+      branches: [ main ] # main 브랜치에 push될 때 실행
+  pull_request:
+      branches: [ main ]
+      
+# 전역 권한 설정
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 중복 실행 방지
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
+    # Pages 환경 설정 추가
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
+    - name: Checkout
+      uses: actions/checkout@v4
+      
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: 22.11.0 # Node.js 버전
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Build project
+        node-version: 22.18.0 # nodejs 버전
+        
+    # 핵심 수정: Clean install로 Rollup 의존성 문제 해결
+    - name: Clean install dependencies
+      run: |
+        rm -rf node_modules package-lock.json
+        npm install
+      
+    - name: Build
       run: npm run build
-
-    - name: Upload artifact for deployment
-      uses: actions/upload-pages-artifact@v1
+      
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        path: ./dist # 빌드 결과물이 위치한 디렉토리
-
+        path: './dist'
+        
     - name: Deploy to GitHub Pages
-      uses: actions/deploy-pages@v2
+      id: deployment
+      uses: actions/deploy-pages@v4
